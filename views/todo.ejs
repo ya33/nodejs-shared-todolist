@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Shared todolist</title>
+    </head>
+
+    <body>
+        <h1>Shared todolist</h1>
+
+        <ul id='todolist'></ul>
+
+        <form action="/todo" method="post" id="todo-form">
+            <p>
+                <label for="newtodo">Que dois-je faire ?</label>
+                <input type="text" name="newtodo" id="newtodo" autofocus />
+                <input type="submit" />
+            </p>
+        </form>
+
+        <div id="historic"></div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/todolist.js"></script>
+
+    </body>
+</html>
