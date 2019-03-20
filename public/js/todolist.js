@@ -20,11 +20,11 @@ socket.on('updateList', function(todolist) {
   displayTodolist(todolist);
 });
 
-//Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
+//Lorsqu'on envoie le formulaire, on transmet le todo
 const todoForm = document.getElementById('todo-form');
 todoForm.onsubmit = function () {
   const newTodo = document.getElementById('newtodo');
-  socket.emit('addTodo', newTodo.value); // Transmet le todo aux autres
+  socket.emit('addTodo', newTodo.value); // Transmet le todo
   newTodo.value = '';
   return false; // Permet de bloquer l'envoi "classique" du formulaire
 };
@@ -40,7 +40,7 @@ socket.on('new_client', function(pseudo) {
   historic.insertAdjacentHTML('afterbegin', '<p><em>' + pseudo + ' a rejoint la Todolist !</em></p>');
   const deleteButtons = document.querySelectorAll('.delete-btn');
 })
-// Quand on reçoit un todo, on l'insère dans la liste
+// Quand on reçoit un todo, on insère l'évènement dans l'historique
 socket.on('newEvent', function(data) {
   displayTodolist(data.list);
   historic.insertAdjacentHTML('afterbegin',`<p><em>${data.event} de **${data.todo}** par ${data.pseudo}</em></p>`);

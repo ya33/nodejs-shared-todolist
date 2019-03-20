@@ -4,7 +4,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const ent = require('ent'); // Permet de bloquer les caractères HTML (sécurité équivalente à htmlentities en PHP)
 const todolist = [];
-// Chargement de la page index.html
+
 app.use(express.static('public'));
 app.get('/', function (req, res) {
   res.render('todo.ejs', {todolist: todolist});
@@ -21,7 +21,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         socket.broadcast.emit('new_client', socket.pseudo);
     });
 
-    // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
+    // Dès qu'on ajoute un todo, on l'ajoute à la liste, on update et on transfère les données aux autres
     socket.on('addTodo', function (todo) {
         todo = ent.encode(todo);
         todolist.push(todo);
@@ -29,6 +29,7 @@ io.sockets.on('connection', function (socket, pseudo) {
         socket.broadcast.emit('newEvent', {pseudo: socket.pseudo, todo: todo, list: todolist, event: 'Ajout'});
     });
 
+    // Dès qu'on supprime un todo, on le supprime de la liste, on update et on transfère les données aux autres
     socket.on('deleteTodo', function (index) {
       const todo = todolist[index];
       todolist.splice(index,1);
